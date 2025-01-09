@@ -20,24 +20,32 @@ export class EmployeeListComponent implements OnInit {
   }
 
   loadEmployees(): void {
-    this.employeeService.getEmployees().subscribe((data) => {
-      this.employees = data;
-    });
-  }
+    this.employeeService.getEmployees().subscribe(
+      (data) => {
 
-  deleteEmployee(id: number | undefined): void {
-    if (id && confirm('Are you sure you want to delete this employee?')) {
-      this.employeeService.deleteEmployee(id).subscribe(() => this.loadEmployees());
+        //this is to see the data i get when loaded from the employees
+        console.log('Received employees data:', data);
+        this.employees = data;
+      },
+      (error) => {
+        // Log for possible errors that might come up
+        console.error('Error fetching employees:', error);
+      }
+    );
+  }
+  deleteEmployee(employeeNo: number | undefined): void {
+    if (employeeNo && confirm('delete this employee?? Very sure?')) {
+      this.employeeService.deleteEmployee(employeeNo).subscribe(() => this.loadEmployees());
     }
   }
 
-  goToAdd(){
+  goToAdd(): void {
     this.router.navigate(['/employees/add']);
   }
 
-  goToEdit(id: number | undefined): void {
-    if (id) {
-      this.router.navigate([`/employees/edit/${id}`]);
+  goToEdit(employeeNo: number | undefined): void {
+    if (employeeNo) {
+      this.router.navigate([`/employees/edit/${employeeNo}`]);
     }
   }
 }
