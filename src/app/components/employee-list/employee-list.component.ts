@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
 })
 export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
+  errorMessage: string | null = null;
 
-  constructor(private employeeService: EmployeeService, private router: Router) {}
+  constructor(private employeeService: EmployeeService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.loadEmployees();
@@ -22,17 +25,18 @@ export class EmployeeListComponent implements OnInit {
   loadEmployees(): void {
     this.employeeService.getEmployees().subscribe(
       (data) => {
-
-        //this is to see the data i get when loaded from the employees
+        // I did this for debugging purposes
         console.log('Received employees data:', data);
         this.employees = data;
       },
       (error) => {
-        // Log for possible errors that might come up
         console.error('Error fetching employees:', error);
+        //Error handling for users to see
+        this.errorMessage = 'An error while loading the employees.';
       }
     );
   }
+
   deleteEmployee(employeeNo: number | undefined): void {
     if (employeeNo && confirm('delete this employee?? Very sure?')) {
       this.employeeService.deleteEmployee(employeeNo).subscribe(() => this.loadEmployees());
@@ -44,8 +48,14 @@ export class EmployeeListComponent implements OnInit {
   }
 
   goToEdit(employeeNo: number | undefined): void {
-    if (employeeNo) {
+    if (employeeNo !== undefined) {
       this.router.navigate([`/employees/edit/${employeeNo}`]);
+    } else {
+      console.error('Employee ID is undefined');
+      // Error handling for the users
+      this.errorMessage = 'The employee ID is missing. Please try again.';
     }
   }
+
 }
+

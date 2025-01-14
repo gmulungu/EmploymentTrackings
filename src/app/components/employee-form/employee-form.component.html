@@ -13,11 +13,12 @@
   <input id="cellPhoneNumber" [(ngModel)]="employee.cellPhoneNumber" name="cellPhoneNumber" required />
 
 
-  <label for="isManager">Is Manager?</label>
-  <select id="isManager" [(ngModel)]="employee.isManager" name="isManager" required>
+  <label for="isManager" *ngIf="employee">Is Manager?</label>
+  <select *ngIf="employee" id="isManager" [(ngModel)]="employee.isManager" name="isManager" required>
     <option [value]="true">Yes</option>
     <option [value]="false">No</option>
   </select>
+
 
   <label for="passwordHash">Password</label>
   <input id="passwordHash" type="password" [(ngModel)]="employee.passwordHash" name="passwordHash" required />
