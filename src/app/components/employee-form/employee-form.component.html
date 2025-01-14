@@ -1,5 +1,10 @@
 <h2>{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h2>
 <form (ngSubmit)="submitForm()">
+  <label for="isDisabled" *ngIf="employee">Active</label>
+  <select *ngIf="employee" id="isDisabled" [(ngModel)]="employee.isDisabled" name="isDisabled" required>
+    <option [ngValue]="true">Yes</option>
+    <option [ngValue]="false">No</option>
+  </select>
   <label for="firstName">First Name</label>
   <input id="firstName" [(ngModel)]="employee.firstName" name="firstName" required />
 
@@ -15,9 +20,11 @@
 
   <label for="isManager" *ngIf="employee">Is Manager?</label>
   <select *ngIf="employee" id="isManager" [(ngModel)]="employee.isManager" name="isManager" required>
-    <option [value]="true">Yes</option>
-    <option [value]="false">No</option>
+    <option [ngValue]="true">Yes</option>
+    <option [ngValue]="false">No</option>
   </select>
+
+
 
 
   <label for="passwordHash">Password</label>

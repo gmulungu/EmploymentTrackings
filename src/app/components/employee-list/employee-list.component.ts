@@ -3,13 +3,14 @@ import {Router, RouterModule} from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
 import { CommonModule } from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
 })
 export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];

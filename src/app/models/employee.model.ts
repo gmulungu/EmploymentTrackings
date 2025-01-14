@@ -8,4 +8,5 @@ export interface Employee {
   isManager: boolean;
   passwordHash: '';
   username: string;
+  isDisabled: boolean;
 }

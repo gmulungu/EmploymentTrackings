@@ -21,6 +21,8 @@ export class EmployeeFormComponent implements OnInit {
     isManager: false,
     passwordHash: '',
     username:'',
+    isDisabled: true,
+
   };
 
   isEditMode = false;
