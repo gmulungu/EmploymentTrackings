@@ -22,6 +22,8 @@ export class EmployeeFormComponent implements OnInit {
     passwordHash: '',
     username:'',
     isDisabled: true,
+    PlainPassword: '',
+    isFirstLogin: true
 
   };
 
@@ -63,48 +65,84 @@ export class EmployeeFormComponent implements OnInit {
     }
   }
 
+  validateForm(): boolean {
+    if (!this.employee.firstName.trim()) {
+      this.errorMessage = 'First name is required.';
+      return false;
+    }
+
+    if (!this.employee.lastName.trim()) {
+      this.errorMessage = 'Last name is required.';
+      return false;
+    }
+
+    if (!this.employee.position.trim()) {
+      this.errorMessage = 'Position is required.';
+      return false;
+    }
+
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(this.employee.cellPhoneNumber)) {
+      this.errorMessage = 'Cell phone number must be a 10-digit number.';
+      return false;
+    }
+
+    if (!this.employee.username.trim()) {
+      this.errorMessage = 'Username is required.';
+      return false;
+    }
+
+    return true;
+  }
+
 
   submitForm(): void {
-    // Reset the error message before attempting the submission
+    // Reset error message
     this.errorMessage = null;
 
+    let payload: Employee;
+
+    // Handle PlainPassword logic
     if (this.isEditMode) {
-      this.employeeService.updateEmployee(this.employee.employeeNo, this.employee).subscribe(
-        () => {
-          console.log('Employee updated successfully');
-          this.router.navigate(['/employees']);
-        },
-        (error) => {
-          console.error('Error updating employee:', error);
-
-          // Error handling
-          this.errorMessage = 'Failed to update employee. Please try again later.';
-
-          if (error?.error?.errors) {
-            console.error('Validation errors:', error.error.errors);
-          }
-        }
-      );
+      // Exclude PlainPassword for update
+      const { PlainPassword, ...updatedEmployee } = this.employee;
+      payload = updatedEmployee as Employee;
     } else {
-      const { employeeNo, ...newEmployee } = this.employee;
-      this.employeeService.addEmployee(newEmployee as Employee).subscribe(
-        () => {
-          console.log('Employee created successfully');
-          this.router.navigate(['/employees']);
-        },
-        (error) => {
-          console.error('Error creating employee:', error);
 
-          // Error handling
-          this.errorMessage = 'Failed to create employee. Please try again later.';
-
-          if (error?.error?.errors) {
-            console.error('Validation errors:', error.error.errors);
-          }
-        }
-      );
+      if (!this.employee.PlainPassword) {
+        this.employee.PlainPassword = this.generateRandomPassword();
+      }
+      payload = this.employee;
     }
+
+    // Determine whether to call the update or create service
+    const serviceCall = this.isEditMode
+      ? this.employeeService.updateEmployee(this.employee.employeeNo, payload)
+      : this.employeeService.addEmployee(this.employee as Employee);
+
+    serviceCall.subscribe(
+      () => {
+        console.log(`${this.isEditMode ? 'Employee updated' : 'Employee created'} successfully`);
+        this.router.navigate(['/employees']);
+      },
+      (error) => {
+        console.error(`Error ${this.isEditMode ? 'updating' : 'creating'} employee:`, error);
+
+        this.errorMessage = `Failed to ${this.isEditMode ? 'update' : 'create'} employee. Please try again later.`;
+
+        if (error?.error?.errors) {
+          console.error('Validation errors:', error.error.errors);
+        }
+      }
+    );
   }
+
+
+
+  generateRandomPassword(): string {
+    return Math.random().toString(36).slice(-8);
+  }
+
 
 
   cancel(): void {

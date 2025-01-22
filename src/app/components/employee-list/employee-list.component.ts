@@ -4,6 +4,9 @@ import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
 import { CommonModule } from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../../confirm-dialog/confirm-dialog.component';
+
 
 
 @Component({
@@ -16,7 +19,7 @@ export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
   errorMessage: string | null = null;
 
-  constructor(private employeeService: EmployeeService, private router: Router) {
+  constructor(private employeeService: EmployeeService, private router: Router,public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -39,8 +42,14 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteEmployee(employeeNo: number | undefined): void {
-    if (employeeNo && confirm('delete this employee?? Very sure?')) {
-      this.employeeService.deleteEmployee(employeeNo).subscribe(() => this.loadEmployees());
+    if (employeeNo) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.employeeService.deleteEmployee(employeeNo).subscribe(() => this.loadEmployees());
+        }
+      });
     }
   }
 

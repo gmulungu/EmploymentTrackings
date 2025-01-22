@@ -1,48 +1,64 @@
-/* General Page  */
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* General Styling */
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background-color: #f9f9f9;
+  background: linear-gradient(135deg, #ff99cc, #dae3e8);
+  font-family: 'Roboto', sans-serif;
   color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-/* Heading  */
+/* Header styling */
 h2 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
   text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: #38468e;
+  margin-top: 40px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Button  */
+/* Button styling */
 button {
-  background-color: #007bff;
-  color: #fff;
+  font-size: 16px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
   border: none;
-  border-radius: 4px;
-  padding: 10px 15px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
-  margin: 5px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  margin: 10px 0;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
 }
 
 button:active {
-  background-color: #004085;
+  transform: scale(0.98);
 }
 
-/* Table  */
+/* Card container for the table */
+table-container {
+  background: #ffffff;
+  border-radius: 8px;
+  margin: 30px auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* Table styling */
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
+  margin-top: 20px;
+  background: linear-gradient(to right, #f8f9fa, #ffffff);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -54,50 +70,49 @@ thead {
 
 th, td {
   padding: 12px 15px;
+  text-align: center;
   border-bottom: 1px solid #ddd;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+tr:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
 }
 
-tbody tr:hover {
-  background-color: #e9f5ff;
-}
-
-td:last-child {
-  text-align: center;
-}
-
-th {
-  font-weight: bold;
-  text-transform: uppercase;
+/* Button within table */
+button {
+  background-color: #17a2b8;
+  padding: 8px 16px;
+  margin: 0;
+  border-radius: 5px;
   font-size: 14px;
 }
 
-td {
-  font-size: 14px;
+button:hover {
+  background-color: #138496;
 }
 
-/* Action Buttons */
-td button {
-  margin-right: 5px;
-  font-size: 12px;
-  padding: 5px 10px;
+button:active {
+  transform: scale(0.98);
 }
 
-td button.edit {
-  background-color: #28a745;
-}
 
-td button.delete {
-  background-color: #dc3545;
-}
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
+  }
 
-td button.edit:hover {
-  background-color: #218838;
-}
+  button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
 
-td button.delete:hover {
-  background-color: #c82333;
+  h2 {
+    font-size: 30px;
+  }
+
+  table-container {
+    padding: 15px;
+  }
 }

@@ -9,4 +9,6 @@ export interface Employee {
   passwordHash: '';
   username: string;
   isDisabled: boolean;
+  PlainPassword: string;
+  isFirstLogin: boolean;
 }
