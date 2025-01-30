@@ -1,7 +1,14 @@
 export interface Employee {
-  id?: number; // Optional for new employees
+
+  employeeNo: number;
   firstName: string;
   lastName: string;
   position: string;
   cellPhoneNumber: string;
+  isManager: boolean;
+  passwordHash: '';
+  username: string;
+  isDisabled: boolean;
+  PlainPassword: string;
+  isFirstLogin: boolean;
 }

@@ -1,43 +1,71 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
 import { CommonModule } from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../../confirm-dialog/confirm-dialog.component';
+
+
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
 })
 export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
+  errorMessage: string | null = null;
 
-  constructor(private employeeService: EmployeeService, private router: Router) {}
+  constructor(private employeeService: EmployeeService, private router: Router,public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.loadEmployees();
   }
 
   loadEmployees(): void {
-    this.employeeService.getEmployees().subscribe((data) => {
-      this.employees = data;
-    });
+    this.employeeService.getEmployees().subscribe(
+      (data) => {
+        // I did this for debugging purposes
+        console.log('Received employees data:', data);
+        this.employees = data;
+      },
+      (error) => {
+        console.error('Error fetching employees:', error);
+        //Error handling for users to see
+        this.errorMessage = 'An error while loading the employees.';
+      }
+    );
   }
 
-  deleteEmployee(id: number | undefined): void {
-    if (id && confirm('Are you sure you want to delete this employee?')) {
-      this.employeeService.deleteEmployee(id).subscribe(() => this.loadEmployees());
+  deleteEmployee(employeeNo: number | undefined): void {
+    if (employeeNo) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.employeeService.deleteEmployee(employeeNo).subscribe(() => this.loadEmployees());
+        }
+      });
     }
   }
 
-  goToAdd(){
+  goToAdd(): void {
     this.router.navigate(['/employees/add']);
   }
 
-  goToEdit(id: number | undefined): void {
-    if (id) {
-      this.router.navigate([`/employees/edit/${id}`]);
+  goToEdit(employeeNo: number | undefined): void {
+    if (employeeNo !== undefined) {
+      this.router.navigate([`/employees/edit/${employeeNo}`]);
+    } else {
+      console.error('Employee ID is undefined');
+      // Error handling for the users
+      this.errorMessage = 'The employee ID is missing. Please try again.';
     }
   }
+
 }
+
