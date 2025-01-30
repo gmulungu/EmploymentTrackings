@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="dashboard">
+    <h2>Employee Dashboard</h2>
+    <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
+
+    <div class="user-info">
+      <p><strong>Employee No: {{ employeeNo }}</strong></p>
+      <p>{{ currentDay }}, {{ currentDate }}</p>
+      <p>{{ currentTime }}</p>
+    </div>
+
+    <div *ngIf="!isClockedIn">
+      <button (click)="clockIn()" class="btn btn-primary">Clock In</button>
+    </div>
+    <div *ngIf="isClockedIn">
+      <button (click)="clockOut()" class="btn btn-warning">Clock Out</button>
+    </div>
+  </div>
+</div>

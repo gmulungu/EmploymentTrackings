@@ -1,10 +1,13 @@
-
-
-
 <h2>Employee List</h2>
+
+<!-- Error Message Display -->
+<div *ngIf="errorMessage" class="alert alert-danger">
+  {{ errorMessage }}
+</div>
+
 <button (click)="goToAdd()">Add Employee</button>
 
-<table>
+<table class="table table-striped table-bordered">
   <thead>
   <tr>
     <th>Active</th>
@@ -15,32 +18,29 @@
     <th>Position</th>
     <th>Cell Phone</th>
     <th>Manager</th>
+    <th>Assigned Manager Number</th>
     <th>Actions</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let employee of employees">
-
-    <td>
-      <!-- Disabled or not -->
-      {{ employee.isDisabled ? 'Yes' : 'No' }}
-
-    </td>
+    <td>{{ employee.isDisabled ? 'Yes' : 'No' }}</td>
     <td>{{ employee.employeeNo }}</td>
     <td>{{ employee.firstName }}</td>
     <td>{{ employee.lastName }}</td>
     <td>{{ employee.username }}</td>
     <td>{{ employee.position }}</td>
     <td>{{ employee.cellPhoneNumber }}</td>
+    <td>{{ employee.isManager ? 'Yes' : 'No' }}</td>
+
     <td>
-      <!-- is the employee a manager or not?? -->
-      {{ employee.isManager ? 'Yes' : 'No' }}
+
+      {{ employee.managerId ? employee.managerId : 'No Manager' }}
     </td>
     <td>
-      <button (click)="goToEdit(employee.employeeNo)">Edit</button>
-      <button (click)="deleteEmployee(employee.employeeNo)">Delete</button>
+      <button (click)="goToEdit(employee.employeeNo)" class="btn btn-warning">Edit</button>
+      <button (click)="deleteEmployee(employee.employeeNo)" class="btn btn-danger">Delete</button>
     </td>
   </tr>
   </tbody>
 </table>
-

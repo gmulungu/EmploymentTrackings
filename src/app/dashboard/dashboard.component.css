@@ -1,0 +1,141 @@
+/* Reset some default styles for consistency */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #3a3a3a, #2c2c2c);
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  color: #f4f4f4;
+}
+
+/* Center the card within the container */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.dashboard {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+  width: 100%;
+  max-width: 380px;
+  border: 1px solid #ddd;
+  position: relative;
+}
+
+/* Heading Styles */
+.dashboard h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Info Section */
+.user-info p {
+  font-size: 1.2rem;
+  color: #777;
+  margin: 8px 0;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #45a049;
+  transform: translateY(-3px);
+}
+
+.btn-warning {
+  background-color: #ff9800;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #e68900;
+  transform: translateY(-3px);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Error Message */
+.text-danger {
+  color: #f44336;
+  margin-top: 15px;
+  font-size: 1rem;
+}
+
+/* Date and Time Formatting */
+.dashboard p {
+  font-size: 1rem;
+  color: #444;
+  margin-top: 10px;
+}
+
+/* Positioning the image section */
+.image-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Make image responsive and add rounded corners */
+.image-section img {
+  max-width: 80%;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.image-section img:hover {
+  transform: scale(1.1);
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .dashboard h2 {
+    font-size: 2rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+  }
+}
