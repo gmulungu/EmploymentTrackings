@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
 import { FormsModule } from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-employee-form',
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.css'],
-  imports: [FormsModule,CommonModule,RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule],
 })
 export class EmployeeFormComponent implements OnInit {
   employee: Employee = {
@@ -20,15 +20,18 @@ export class EmployeeFormComponent implements OnInit {
     cellPhoneNumber: '',
     isManager: false,
     passwordHash: '',
-    username:'',
+    username: '',
     isDisabled: true,
     PlainPassword: '',
-    isFirstLogin: true
+    isFirstLogin: true,
+    managerId: null,
 
   };
 
   isEditMode = false;
   errorMessage: string | null = null;
+  employees: Employee[] = []; // To hold list of employees for manager selection
+  // managers: any[] = [];
 
   constructor(
     private employeeService: EmployeeService,
@@ -37,12 +40,24 @@ export class EmployeeFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // if for example I pass EmployeeNo in the route
+    // Fetching list of employees for the manager dropdown
+    this.employeeService.getEmployees().subscribe(
+      (allEmployees) => {
+        this.employees = allEmployees;
+      },
+      (error) => {
+        console.error('Error fetching employees:', error);
+        this.errorMessage = 'An error occurred while fetching employees for manager selection.';
+      }
+    );
+
+
+
+    // Fetch the employee details if in edit mode
     const employeeNo = this.route.snapshot.params['employeeNo'];
 
     if (!employeeNo) {
       this.errorMessage = 'Employee ID is missing. Redirecting to the employee list...';
-
       return;
     }
 
@@ -95,7 +110,6 @@ export class EmployeeFormComponent implements OnInit {
     return true;
   }
 
-
   submitForm(): void {
     // Reset error message
     this.errorMessage = null;
@@ -108,7 +122,6 @@ export class EmployeeFormComponent implements OnInit {
       const { PlainPassword, ...updatedEmployee } = this.employee;
       payload = updatedEmployee as Employee;
     } else {
-
       if (!this.employee.PlainPassword) {
         this.employee.PlainPassword = this.generateRandomPassword();
       }
@@ -137,13 +150,9 @@ export class EmployeeFormComponent implements OnInit {
     );
   }
 
-
-
   generateRandomPassword(): string {
     return Math.random().toString(36).slice(-8);
   }
-
-
 
   cancel(): void {
     this.router.navigate(['/employees']);

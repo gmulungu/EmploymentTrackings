@@ -1,136 +1,77 @@
-
-<!-- Removed the password field because its auto generated -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="bg">
-        <!-- Centered Header -->
         <h2 class="text-center">{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h2>
         <form (ngSubmit)="submitForm()" #employeeForm="ngForm">
-          <!-- Active -->
-          <label for="isDisabled" *ngIf="employee">Active</label>
-          <select
-            *ngIf="employee"
-            id="isDisabled"
-            [(ngModel)]="employee.isDisabled"
-            name="isDisabled"
-            required
-            #isDisabled="ngModel"
-          >
-            <option [ngValue]="true">Yes</option>
-            <option [ngValue]="false">No</option>
-          </select>
 
-          <!-- trying to make the First Name and Last Name in Same Row to make it neater-->
+          <!-- Row 1: Active & Is Manager -->
           <div class="row">
             <div class="col-6">
-              <label for="firstName">First Name</label>
-              <input
-                id="firstName"
-                [(ngModel)]="employee.firstName"
-                name="firstName"
-                required
-                #firstName="ngModel"
-                class="form-control"
-              />
-              <div *ngIf="firstName.invalid && firstName.touched" class="error">
-                First name is required.
-              </div>
-            </div>
-
-            <div class="col-6">
-              <label for="lastName">Last Name</label>
-              <input
-                id="lastName"
-                [(ngModel)]="employee.lastName"
-                name="lastName"
-                required
-                #lastName="ngModel"
-                class="form-control"
-              />
-              <div *ngIf="lastName.invalid && lastName.touched" class="error">
-                Last name is required.
-              </div>
-            </div>
-          </div>
-
-          <!-- Position and Cell Phone in Same Row -->
-          <div class="row">
-            <div class="col-6">
-              <label for="position">Position</label>
-              <input
-                id="position"
-                [(ngModel)]="employee.position"
-                name="position"
-                required
-                #position="ngModel"
-                class="form-control"
-              />
-              <div *ngIf="position.invalid && position.touched" class="error">
-                Position is required.
-              </div>
-            </div>
-
-            <div class="col-6">
-              <label for="cellPhoneNumber">Cell Phone</label>
-              <input
-                id="cellPhoneNumber"
-                [(ngModel)]="employee.cellPhoneNumber"
-                name="cellPhoneNumber"
-                required
-                pattern="[0-9]{10}"
-                #cellPhoneNumber="ngModel"
-                class="form-control"
-              />
-              <div *ngIf="cellPhoneNumber.invalid && cellPhoneNumber.touched" class="error">
-                Cell phone number must be a 10-digit number.
-              </div>
-            </div>
-          </div>
-
-          <!-- Is Manager and Username in Same Row -->
-          <div class="row">
-            <div class="col-6">
-              <label for="isManager" *ngIf="employee">Is Manager?</label>
-              <select
-                *ngIf="employee"
-                id="isManager"
-                [(ngModel)]="employee.isManager"
-                name="isManager"
-                required
-                #isManager="ngModel"
-                class="form-control"
-              >
+              <label for="isDisabled">Active</label>
+              <select id="isDisabled" [(ngModel)]="employee.isDisabled" name="isDisabled" required class="form-control">
                 <option [ngValue]="true">Yes</option>
                 <option [ngValue]="false">No</option>
               </select>
             </div>
 
             <div class="col-6">
-              <label for="username">Username</label>
-              <input
-                id="username"
-                [(ngModel)]="employee.username"
-                name="username"
-                required
-                #username="ngModel"
-                class="form-control"
-              />
-              <div *ngIf="username.invalid && username.touched" class="error">
-                Username is required.
-              </div>
+              <label for="isManager">Is Manager?</label>
+              <select id="isManager" [(ngModel)]="employee.isManager" name="isManager" required class="form-control">
+                <option [ngValue]="true">Yes</option>
+                <option [ngValue]="false">No</option>
+              </select>
             </div>
           </div>
 
+          <!-- Row 2: First Name & Last Name -->
+          <div class="row">
+            <div class="col-6">
+              <label for="firstName">First Name</label>
+              <input id="firstName" [(ngModel)]="employee.firstName" name="firstName" required class="form-control">
+            </div>
 
-          <!-- Submit Button -->
-          <div class="buttons">
+            <div class="col-6">
+              <label for="lastName">Last Name</label>
+              <input id="lastName" [(ngModel)]="employee.lastName" name="lastName" required class="form-control">
+            </div>
+          </div>
+
+          <!-- Row 3: Position & Username -->
+          <div class="row">
+            <div class="col-6">
+              <label for="position">Position</label>
+              <input id="position" [(ngModel)]="employee.position" name="position" required class="form-control">
+            </div>
+
+            <div class="col-6">
+              <label for="username">Username</label>
+              <input id="username" [(ngModel)]="employee.username" name="username" required class="form-control">
+            </div>
+          </div>
+
+          <!-- Row 4: Cell Phone & Manager ID -->
+          <div class="row">
+            <div class="col-6">
+              <label for="cellPhoneNumber">Cell Phone</label>
+              <input id="cellPhoneNumber" [(ngModel)]="employee.cellPhoneNumber" name="cellPhoneNumber" required pattern="[0-9]{10}" class="form-control">
+            </div>
+
+            <div class="col-6">
+              <label for="managerId">Manager ID</label>
+              <input id="managerId" [(ngModel)]="employee.managerId" name="managerId" class="form-control">
+            </div>
+          </div>
+
+          <!-- Submit & Cancel Buttons -->
+          <div class="buttons text-center mt-3">
             <button type="submit" [disabled]="employeeForm.invalid" class="btn btn-primary">Save</button>
             <button type="button" (click)="cancel()" class="btn btn-secondary">Cancel</button>
           </div>
+
         </form>
       </div>
     </div>
