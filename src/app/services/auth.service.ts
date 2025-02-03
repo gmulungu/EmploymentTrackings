@@ -13,8 +13,8 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/employee/login`, {username, password}).pipe(
+  login(employeeNo: number, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/employee/login`, {employeeNo, password}).pipe(
       catchError((error) => {
         // Handle server-side errors
         if (error.status === 400 && error.error.message === 'Please change your password.') {

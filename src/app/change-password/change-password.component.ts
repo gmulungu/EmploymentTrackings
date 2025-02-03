@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {AuthService} from '../services/auth.service';
-import {EmployeeService} from '../services/employee.service';
-import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
-
+import { AuthService } from '../services/auth.service';
+import { EmployeeService } from '../services/employee.service';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-change-password',
@@ -20,14 +19,15 @@ export class ChangePasswordComponent implements OnInit {
   newPassword: string = '';
   confirmPassword: string = '';
   errorMessage: string | null = null;
+  employeeNo: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router, private employeeService: EmployeeService) {
-  }
+  constructor(private authService: AuthService, private router: Router, private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
-    const employeeNo = localStorage.getItem('employeeNo');
-    console.log('Retrieved employeeNo on Init:', employeeNo); // Debugging
-    if (!employeeNo) {
+    this.employeeNo = localStorage.getItem('employeeNo');
+    console.log('Retrieved employeeNo on Init:', this.employeeNo);
+
+    if (!this.employeeNo) {
       this.errorMessage = 'No employee number found. Please log in again.';
       return;
     }
@@ -39,15 +39,13 @@ export class ChangePasswordComponent implements OnInit {
       return;
     }
 
-    const employeeNo = localStorage.getItem('employeeNo');
-
-    if (!employeeNo) {
+    if (!this.employeeNo) {
       this.errorMessage = 'Employee number is required. Please log in again.';
       console.error('Error: No employee number found in localStorage.');
       return;
     }
 
-    this.employeeService.changePassword(employeeNo, this.newPassword).subscribe(
+    this.employeeService.changePassword(this.employeeNo, this.newPassword).subscribe(
       () => {
         console.log('Password changed successfully');
         this.router.navigate(['/dashboard']);

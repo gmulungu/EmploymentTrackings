@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {AuthService} from '../services/auth.service';
-import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
+import { AuthService } from '../services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -14,18 +14,21 @@ import {NgIf} from '@angular/common';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string = '';
+  employeeNo: number | null = null;
   password: string = '';
   errorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   login(): void {
-    this.authService.login(this.username, this.password).subscribe(
+    if (!this.employeeNo) {
+      this.errorMessage = 'Employee number is required';
+      return;
+    }
+
+    this.authService.login(this.employeeNo, this.password).subscribe(
       (response) => {
         if (response?.message === 'Login successful') {
           if (response.Employee && response.Employee.employeeNo) {
@@ -47,7 +50,7 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
-        this.errorMessage = 'Invalid username or password';
+        this.errorMessage = 'Invalid employee number or password';
         console.error('Login error:', error);
       }
     );
