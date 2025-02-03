@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.employeeNo, this.password).subscribe(
       (response) => {
         if (response?.message === 'Login successful') {
-          if (response.Employee && response.Employee.employeeNo) {
-            localStorage.setItem('employeeNo', response.Employee.employeeNo.toString());
+          if (response.employee && response.employee.employeeNo) {
+            localStorage.setItem('employeeNo', response.employee.employeeNo.toString());
             console.log('Stored employeeNo:', localStorage.getItem('employeeNo'));
             this.router.navigate(['/dashboard']);
           } else {
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
             this.errorMessage = 'Login successful, but employee number is missing.';
           }
         } else if (response?.message === 'Please change your password.') {
-          if (response.Employee && response.Employee.employeeNo) {
-            localStorage.setItem('employeeNo', response.Employee.employeeNo.toString());
+          if (response.employee && response.employee.employeeNo) {
+            localStorage.setItem('employeeNo', response.employee.employeeNo.toString());
             console.log('Stored employeeNo:', localStorage.getItem('employeeNo'));
           }
           this.router.navigate(['/change-password']);
