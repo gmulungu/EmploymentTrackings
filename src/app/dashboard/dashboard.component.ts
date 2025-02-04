@@ -33,24 +33,13 @@ export class DashboardComponent implements OnInit {
     }
 
 
-    this.getClockInStatus();
+
 
 
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 1000);
   }
 
-  getClockInStatus(): void {
-    this.employeeService.getClockInStatus(this.employeeNo).subscribe(
-      (status) => {
-        this.isClockedIn = status.isClockedIn;
-      },
-      (error) => {
-        console.error('Error fetching clock-in status:', error);
-        this.errorMessage = 'Could not retrieve your clock-in status. Please try again later.';
-      }
-    );
-  }
 
   clockIn(): void {
     if (this.isClockedIn) {
@@ -65,10 +54,21 @@ export class DashboardComponent implements OnInit {
       },
       (error) => {
         console.error('Error clocking in:', error);
-        this.errorMessage = 'Error clocking in. Please try again later.';
+
+
+        if (error.status === 400) {
+          this.errorMessage = 'Invalid request. Please try again later.';
+        } else if (error.status === 404) {
+          this.errorMessage = 'Employee not found. Please check your employee number.';
+        } else if (error.status === 500) {
+          this.errorMessage = 'Server error. Please try again later.';
+        } else {
+          this.errorMessage = 'Error clocking in. Please try again later.';
+        }
       }
     );
   }
+
 
   clockOut(): void {
     if (!this.isClockedIn) {
@@ -83,11 +83,20 @@ export class DashboardComponent implements OnInit {
       },
       (error) => {
         console.error('Error clocking out:', error);
-        this.errorMessage = 'Error clocking out. Please try again later.';
+
+
+        if (error.status === 400) {
+          this.errorMessage = 'Invalid request. Please try again later.';
+        } else if (error.status === 404) {
+          this.errorMessage = 'Employee not found. Please check your employee number.';
+        } else if (error.status === 500) {
+          this.errorMessage = 'Server error. Please try again later.';
+        } else {
+          this.errorMessage = 'Error clocking out. Please try again later.';
+        }
       }
     );
   }
-
 
 
   updateDateTime(): void {

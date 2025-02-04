@@ -18,9 +18,11 @@ export class LoginComponent implements OnInit {
   password: string = '';
   errorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   login(): void {
     if (!this.employeeNo) {
@@ -37,20 +39,33 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/dashboard']);
           } else {
             console.error('Error: Employee number is missing in the response.');
-            this.errorMessage = 'Login successful, but employee number is missing.';
+            this.errorMessage = 'Error: employee number is missing.';
           }
         } else if (response?.message === 'Please change your password.') {
-          if (response.employee && response.employee.employeeNo) {
-            localStorage.setItem('employeeNo', response.employee.employeeNo.toString());
-            console.log('Stored employeeNo:', localStorage.getItem('employeeNo'));
-          }
+
           this.router.navigate(['/change-password']);
         } else {
-          this.errorMessage = 'Unexpected response format';
+          this.errorMessage = 'There was an issue with your login.';
         }
       },
       (error) => {
-        this.errorMessage = 'Invalid employee number or password';
+        if (error.status === 400) {
+          // Handle bad request, possibly invalid credentials
+          this.errorMessage = 'Invalid employee number or password. Please try again.';
+        } else if (error.status === 401) {
+          // Unauthorized error
+          this.errorMessage = 'Unauthorized: Incorrect employee number or password.';
+        } else if (error.status === 404) {
+          // Not Found
+          this.errorMessage = 'Server not found. Please try again later.';
+        } else if (error.status === 500) {
+          // Internal Server Error
+          this.errorMessage = 'Server error. Please try again later.';
+        } else {
+          // Handle other unexpcted errors
+          this.errorMessage = 'An unexpected error occurred. Please try again.';
+        }
+
         console.error('Login error:', error);
       }
     );
