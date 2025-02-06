@@ -18,10 +18,13 @@ export class LoginComponent implements OnInit {
   password: string = '';
   errorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
+  // Inside LoginComponent
   login(): void {
     if (!this.employeeNo) {
       this.errorMessage = 'Employee number is required';
@@ -30,23 +33,38 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.employeeNo, this.password).subscribe(
       (response) => {
+        console.log(response);
         if (response?.message === 'Login successful') {
-          if (response.employee && response.employee.employeeNo) {
-            localStorage.setItem('employeeNo', response.employee.employeeNo.toString());
+
+          if (response.employee && response.employeeNo) {
+
+            console.log('Attempting to store employeeNo:', response.employeeNo);
+
+
+            console.log(response)
+            localStorage.setItem('employeeNo', response.employeeNo.toString());
+
+
             console.log('Stored employeeNo:', localStorage.getItem('employeeNo'));
+
             this.router.navigate(['/dashboard']);
           } else {
             console.error('Error: Employee number is missing in the response.');
-            this.errorMessage = 'Login successful, but employee number is missing.';
+            this.errorMessage = ' employee number is missing.';
           }
         } else if (response?.message === 'Please change your password.') {
-          if (response.employee && response.employee.employeeNo) {
-            localStorage.setItem('employeeNo', response.employee.employeeNo.toString());
-            console.log('Stored employeeNo:', localStorage.getItem('employeeNo'));
+          console.log('Response indicating password change required:', response);
+          console.log(response.employeeNo);
+
+          if (response.employeeNo) {
+            console.log('Storing employeeNo for password change:', response.employeeNo);
+            localStorage.setItem('employeeNo', response.employeeNo.toString());
           }
+
           this.router.navigate(['/change-password']);
         } else {
           this.errorMessage = 'Unexpected response format';
+          console.error('Unexpected response:', response);
         }
       },
       (error) => {

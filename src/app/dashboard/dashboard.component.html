@@ -11,9 +11,11 @@
 
     <div *ngIf="!isClockedIn">
       <button (click)="clockIn()" class="btn btn-primary">Clock In</button>
+      <button (click)="logout()">Logout</button>
     </div>
     <div *ngIf="isClockedIn">
       <button (click)="clockOut()" class="btn btn-warning">Clock Out</button>
+      <button (click)="logout()">Logout</button>
     </div>
   </div>
 </div>

@@ -88,7 +88,13 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-
+// Logout Method
+  logout(): void {
+    // Remove the employeeNo from localStorage
+    localStorage.removeItem('employeeNo');
+    console.log('Employee number removed from localStorage.');
+    this.router.navigate(['/login']);
+  }
 
   updateDateTime(): void {
     const now = new Date();

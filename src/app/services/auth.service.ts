@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import {environment} from '../../environment';
-// import {environment} from '../../environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import {environment} from '../../environment';
 export class AuthService {
   private apiUrl = environment.apiUrl; // Ensure your backend API URL is correct
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   login(employeeNo: number, password: string): Observable<any> {
@@ -23,6 +23,17 @@ export class AuthService {
         return throwError(error);
       })
     );
+  }
+
+  logout(): void {
+    // Remove the employeeNo from localStorage when logging out
+    localStorage.removeItem('employeeNo');
+
+    // Optionally, also remove other session data
+    // localStorage.removeItem('token'); // etc.
+
+    // Navigate to the login page or home
+    this.router.navigate(['/login']);
   }
 }
 

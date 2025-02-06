@@ -49,7 +49,7 @@ export class EmployeeService {
   }
 
 
-  changePassword(employeeNo: string, newPassword: string): Observable<any> {
+  changePassword(employeeNo: number, newPassword: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/employee/${employeeNo}/change-password`, { newPassword });
   }
 
