@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   login(employeeNo: number, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/employee/login`, {employeeNo, password}).pipe(
+    return this.http.post<any>(`${this.apiUrl}/auth/login`, {employeeNo, password}).pipe(
       catchError((error) => {
         // Handle server-side errors
         if (error.status === 400 && error.error.message === 'Please change your password.') {

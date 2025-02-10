@@ -138,4 +138,29 @@ body {
   .btn {
     font-size: 1rem;
   }
+
+  .btn-logout {
+    background-color: #dc3545; /* Red for logout */
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-logout:hover {
+    background-color: #c82333;
+    transform: translateY(-3px);
+  }
+
+  .btn-logout:active {
+    transform: translateY(1px);
+  }
+
 }

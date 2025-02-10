@@ -37,20 +37,20 @@ export class EmployeeService {
   }
 
   clockIn(employeeNo: number) {
-    return this.http.post(`${environment.apiUrl}/employee/${employeeNo}/clock-in`, {});
+    return this.http.post(`${environment.apiUrl}/clock/${employeeNo}/clock-in`, {});
   }
 
   clockOut(employeeNo: number) {
-    return this.http.post(`${environment.apiUrl}/employee/${employeeNo}/clock-out`, {});
+    return this.http.post(`${environment.apiUrl}/clock/${employeeNo}/clock-out`, {});
   }
 
   getClockInStatus(employeeNo: number) {
-    return this.http.get<{ isClockedIn: boolean }>(`${environment.apiUrl}/employee/${employeeNo}/clock-in-status`);
+    return this.http.get<{ isClockedIn: boolean }>(`${environment.apiUrl}/clock/${employeeNo}/clock-in-status`);
   }
 
 
   changePassword(employeeNo: number, newPassword: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/employee/${employeeNo}/change-password`, { newPassword });
+    return this.http.post<any>(`${this.apiUrl}/auth/${employeeNo}/change-password`, { newPassword });
   }
 
 

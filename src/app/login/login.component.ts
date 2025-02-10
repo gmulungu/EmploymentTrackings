@@ -33,37 +33,45 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.employeeNo, this.password).subscribe(
       (response) => {
-        console.log(response);
+        console.log(response.employee.employeeNo);
         if (response?.message === 'Login successful') {
 
-          if (response.employee && response.employeeNo) {
+          if (response.employee.employeeNo) {
 
-            console.log('Attempting to store employeeNo:', response.employeeNo);
+            console.log('Attempting to store employeeNo:', response.employee.employeeNo);
 
 
             console.log(response)
-            localStorage.setItem('employeeNo', response.employeeNo.toString());
+            localStorage.setItem('employeeNo', response.employee.employeeNo.toString());
 
 
-            console.log('Stored employeeNo:', localStorage.getItem('employeeNo'));
+            console.log('Stored employeeNo:', localStorage.getItem(response.employee.employeeNo));
 
             this.router.navigate(['/dashboard']);
           } else {
             console.error('Error: Employee number is missing in the response.');
-            this.errorMessage = ' employee number is missing.';
+
+            if (response.status === 400) {
+              this.errorMessage = 'Invalid employee number or password. Please try again.';
+            } else if (response.status === 404) {
+              this.errorMessage = 'Employee not found. Please check your details.';
+            } else {
+              this.errorMessage = 'An unexpected error occurred. Please try again later.';
+            }
           }
+
         } else if (response?.message === 'Please change your password.') {
           console.log('Response indicating password change required:', response);
           console.log(response.employeeNo);
 
-          if (response.employeeNo) {
-            console.log('Storing employeeNo for password change:', response.employeeNo);
-            localStorage.setItem('employeeNo', response.employeeNo.toString());
+          if (response.employee.employeeNo) {
+            console.log('Storing employeeNo for password change:', response.employee.employeeNo);
+            localStorage.setItem('employeeNo', response.employee.employeeNo.toString());
           }
 
           this.router.navigate(['/change-password']);
         } else {
-          this.errorMessage = 'Unexpected response format';
+          this.errorMessage = 'Something went wrong. Please try again or contact geurschomsupport.com.';
           console.error('Unexpected response:', response);
         }
       },

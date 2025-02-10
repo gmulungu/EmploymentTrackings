@@ -59,34 +59,48 @@ export class DashboardComponent implements OnInit {
     }
 
     this.employeeService.clockIn(this.employeeNo).subscribe(
-      (response) => {
-        this.isClockedIn = true;
-        console.log('Clocked in successfully');
-      },
-      (error) => {
-        console.error('Error clocking in:', error);
-        this.errorMessage = 'Error clocking in. Please try again later.';
-      }
+        (response) => {
+          this.isClockedIn = true;
+          console.log('Clocked in successfully');
+        },
+        (error) => {
+          console.error('Error clocking in:', error);
+
+          if (error.status === 400) {
+            this.errorMessage = 'Invalid request. Please check your details and try again.';
+          } else if (error.status === 404) {
+            this.errorMessage = 'Employee not found. Please ensure your employee number is correct.';
+          } else {
+            this.errorMessage = 'An unexpected error occurred. Please try again later.';
+          }
+        }
     );
   }
 
-  clockOut(): void {
-    if (!this.isClockedIn) {
-      this.errorMessage = 'You are not clocked in.';
-      return;
+    clockOut(): void {
+      if (!this.isClockedIn) {
+        this.errorMessage = 'You are not clocked in.';
+        return;
+      }
+
+      this.employeeService.clockOut(this.employeeNo).subscribe(
+          (response) => {
+            this.isClockedIn = false;
+            console.log('Clocked out successfully');
+          },
+          (error) => {
+            console.error('Error clocking out:', error);
+
+            if (error.status === 400) {
+              this.errorMessage = 'Invalid request. Please check your details and try again.';
+            } else if (error.status === 404) {
+              this.errorMessage = 'Employee not found. Please ensure your employee number is correct.';
+            } else {
+              this.errorMessage = 'An unexpected error occurred. Please try again later.';
+            }
+          }
+      );
     }
-
-    this.employeeService.clockOut(this.employeeNo).subscribe(
-      (response) => {
-        this.isClockedIn = false;
-        console.log('Clocked out successfully');
-      },
-      (error) => {
-        console.error('Error clocking out:', error);
-        this.errorMessage = 'Error clocking out. Please try again later.';
-      }
-    );
-  }
 
 // Logout Method
   logout(): void {
