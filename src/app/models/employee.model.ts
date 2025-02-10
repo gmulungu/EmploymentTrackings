@@ -11,4 +11,6 @@ export interface Employee {
   isDisabled: boolean;
   PlainPassword: string;
   isFirstLogin: boolean;
+  managerId: number | null
+
 }
